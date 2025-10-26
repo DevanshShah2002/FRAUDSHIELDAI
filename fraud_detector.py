@@ -1,5 +1,6 @@
 import os
 import google.generativeai as genai
+from datetime import datetime
 
 # Load API key from environment variable
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
@@ -23,7 +24,9 @@ class FraudDetector:
             return 0.0, ["Empty input"]
 
         prompt = f"""
-        You are a fraud detection AI. Analyze the following text for business fraud risk.
+        You are a fraud detection AI. Analyze the following text for fraud risk. See if email is spam or not. Also take out words which shows its a spam or not.
+        Summarize the email and also tell the priority of that email. 
+        today date is {datetime.now()}
         Return ONLY a JSON response. No explanation outside of JSON.
 
         Text to analyze:
@@ -33,8 +36,9 @@ class FraudDetector:
         {{
         "fraud_probability": <number between 0 and 1>,
         "reasons": ["list of reasons why it is risky or safe"]
-        "Prority":["High"/"Medium"/"Low"]
-        
+        "priority":<"High"/"Medium"/"Low">
+        "summary" : <summary(make it either 2/3 size of content or 1 line summary whatever is bigger)> 
+
 
         }}
         """
@@ -58,8 +62,9 @@ class FraudDetector:
             reasons = result.get("reasons", [])
             if not isinstance(reasons, list):
                 reasons = [str(reasons)]
-
-            return fraud_prob, reasons
+            summary= str(result.get("summary"))
+            priority= str(result.get("priority"))
+            return fraud_prob, reasons, priority, summary
 
         except Exception as e:
             # Failure fallback

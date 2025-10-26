@@ -1,4 +1,4 @@
-body { font-family: Arial, sans-serif; background:black; color:green; }
+body { font-family: Arial, sans-serif; background:#F4F4F9; color:#1A1A1A; }
 .container { max-width:900px; margin:30px auto; padding:16px;}
 .card { background:white; padding:12px; border-radius:8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom:12px;}
 table { width:100%; border-collapse:collapse; }

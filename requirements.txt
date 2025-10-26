@@ -5,3 +5,4 @@ python-multipart==0.0.5
 nltk==3.8.1
 tldextract
 google.generativeai
+datetime

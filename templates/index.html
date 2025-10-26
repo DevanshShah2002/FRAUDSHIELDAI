@@ -2,32 +2,152 @@
 <html>
 <head>
   <meta charset="utf-8"/>
-  <title>smart email- Prototype</title>
-  <link rel="stylesheet" href="/static/style.css"/>
+  <title>Smart Email - Prototype</title>
+  <style>
+    /* Global Styling */
+    body {
+      font-family: "Inter", Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      margin: 0;
+      color: #1A1A1A;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #fff;
+      margin-bottom: 20px;
+      font-size: 36px;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    /* Card Styling */
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+      margin-bottom: 20px;
+      animation: fadeIn .5s ease;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #2a5298;
+      border-left: 4px solid #2a5298;
+      padding-left: 10px;
+    }
+
+    /* Form Styling */
+    input, textarea {
+      width: 97%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border .2s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #2a5298;
+      box-shadow: 0 0 0 2px rgba(42, 82, 152, 0.15);
+    }
+
+    button {
+      background: #2a5298;
+      padding: 12px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+      font-weight: bold;
+      color: white;
+      width: 180px;
+      transition: .3s;
+    }
+
+    button:hover {
+      background: #1e3c72;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Table Styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    th {
+      background: #1e3c72;
+      color: white;
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    tr:hover td {
+      background: rgba(42, 82, 152, 0.08);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>smart email(Prototype)</h1>
+    <h1>Smart Email (Prototype)</h1>
+
     <section class="card">
       <h2>Upload Invoice or Paste Text</h2>
       <form action="/upload_invoice" method="post" enctype="multipart/form-data">
-        <label>Vendor domain (e.g. payments@micros0ft.com or microsoft.com):</label><br/>
-        <input type="text" name="vendor_domain" placeholder="vendor domain"/><br/>
-        <label>Or paste invoice / email body:</label><br/>
-        <textarea name="invoice_text" rows="6" cols="60"></textarea><br/>
-        <button type="submit">Check</button>
+        <label>Sender domain (e.g. payments@micros0ft.com or microsoft.com):</label>
+        <input type="text" name="vendor_domain" placeholder="Enter vendor email or domain"/>
+
+        <label>Email Content</label>
+        <textarea name="invoice_text" rows="6" placeholder="Paste email text here..."></textarea>
+
+        <button type="submit">Analyze Email</button>
       </form>
     </section>
+
     <section class="card">
-      <h2>Recent checks</h2>
+      <h2>Recent Checks</h2>
       <table>
-        <!-- <tr><th>File</th><th>Vendor</th><th>Fraud Prob</th><th>Trust</th><th>Reasons</th></tr>
-        -->
+        <tr>
+          <th>Domain</th>
+          <th>Fraud Prob</th>
+          <th>Reasons</th>
+          <th>Priority</th>
+          <th>Summary</th>
+        </tr>
         {% for u in uploads %}
         <tr>
           <td>{{u.vendor_domain}}</td>
           <td>{{ "%.2f" % u.fraud_prob }}</td>
           <td>{{u.reasons|join(', ')}}</td>
+          <td>{{u.priority}}</td>
+          <td>{{u.summary}}</td>
         </tr>
         {% endfor %}
       </table>

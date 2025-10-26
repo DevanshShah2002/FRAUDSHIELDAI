@@ -5,3 +5,5 @@ nltk==3.8.1
 tldextract
 google.generativeai
 datetime
+gunicorn
+Jinja2
